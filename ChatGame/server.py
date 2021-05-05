@@ -7,17 +7,17 @@ from threading import Thread
 def accepts_incoming_connections():
     while True:
         client, client_address = SERVER.accept()
-        print("%s: si è collegato." % client_address)
-        client.send(bytes("Salve! Digita il tuo Nome seguito dal tasto Invio!", "utf8"))
+        print("%s: joined us." % client_address)
+        client.send(bytes("Hello! Insert your name followd by the enter key !", "utf8"))
         indirizzi[client] = client_address
         Thread(target=manage_client, args=(client,)).start()
 
 
 def manage_client(client):
     name = client.recv(BUFSIZ).decode("utf8")
-    welcome = 'Benvenuto %s! Se vuoi lasciare la Chat, scrivi {quit} per uscire.' % name
+    welcome = 'Welcome %s! If you want leave chat, write {quit}.' % name
     client.send(bytes(welcome, "utf8"))
-    msg = "%s si è unito all chat!" % name
+    msg = "%s joined us!" % name
     broadcast(bytes(msg, "utf8"))
     clients[client] = name
 
@@ -41,7 +41,7 @@ def broadcast(msg, prefix=""):
 clients = {}
 indirizzi = {}
 
-HOST = ''
+HOST = '127.0.0.1'
 PORT = 53000
 BUFSIZ = 1024
 ADDR = (HOST, PORT)
@@ -51,7 +51,7 @@ SERVER.bind(ADDR)
 
 if __name__ == "__main__":
     SERVER.listen(5)
-    print("In attesa di connessioni...")
+    print("Waiting for other connections...")
     ACCEPT_THREAD = Thread(target=accepts_incoming_connections)
     ACCEPT_THREAD.start()
     ACCEPT_THREAD.join()
