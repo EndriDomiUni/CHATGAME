@@ -8,7 +8,7 @@ def accepts_incoming_connections():
     while True:
         client, client_address = SERVER.accept()
         print("%s: joined us." % client_address)
-        client.send(bytes("Hello! Insert your name followd by the enter key !", "utf8"))
+        client.send(bytes("Hello! Insert your name followed by the enter key !", "utf8"))
         indirizzi[client] = client_address
         Thread(target=manage_client, args=(client,)).start()
 
@@ -41,8 +41,8 @@ def broadcast(msg, prefix=""):
 clients = {}
 indirizzi = {}
 
-HOST = '127.0.0.1'
-PORT = 53000
+HOST = ''
+PORT = 53001
 BUFSIZ = 1024
 ADDR = (HOST, PORT)
 
