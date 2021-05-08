@@ -53,7 +53,7 @@ frame.protocol("WM_DELETE_WINDOW", on_closing)
 HOST = input('Insert server host: ')
 PORT = input('Insert port: ')
 if not PORT:
-    PORT = 53000
+    PORT = 52001
 else:
     PORT = int(PORT)
 

@@ -1,4 +1,12 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Fri May  7 16:16:08 2021
+
+@author: apirodd
+"""
+
+# !/usr/bin/env python3
 
 from socket import AF_INET, socket, SOCK_STREAM
 from threading import Thread
@@ -7,8 +15,9 @@ from threading import Thread
 def accepts_incoming_connections():
     while True:
         client, client_address = SERVER.accept()
-        print("%s: joined us." % client_address)
+        print("${0}: joined us.".format(client_address))
         client.send(bytes("Hello! Insert your name followed by the enter key !", "utf8"))
+
         indirizzi[client] = client_address
         Thread(target=manage_client, args=(client,)).start()
 
@@ -42,7 +51,7 @@ clients = {}
 indirizzi = {}
 
 HOST = ''
-PORT = 53001
+PORT = 52001
 BUFSIZ = 1024
 ADDR = (HOST, PORT)
 
