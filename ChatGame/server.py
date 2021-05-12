@@ -1,12 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Created on Fri May  7 16:16:08 2021
 
-@author: apirodd
-"""
-
-# !/usr/bin/env python3
 
 from socket import AF_INET, socket, SOCK_STREAM
 from threading import Thread

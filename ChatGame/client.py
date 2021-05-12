@@ -13,7 +13,7 @@ def receive():
             break
 
 
-def send():
+def send(event=None):
     msg = my_msg.get()
     my_msg.set("")
     client_socket.send(bytes(msg, "utf8"))
