@@ -27,6 +27,11 @@ def on_closing():
     send()
 
 
+def play():
+    my_msg.set("{play}")
+    send()
+
+
 frame = tk.Tk()
 frame.title("Chat-Game")
 
