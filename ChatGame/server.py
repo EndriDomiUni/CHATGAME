@@ -4,6 +4,7 @@
 
 from socket import AF_INET, socket, SOCK_STREAM
 from threading import Thread
+#import senteces
 
 
 def accepts_incoming_connections():
@@ -39,6 +40,13 @@ def manage_client(client):
 def broadcast(msg, prefix=""):
     for user in clients:
         user.send(bytes(prefix, "utf8") + msg)
+
+#def set_question(client):
+#    if client.send(bytes("{play}", "utf8")):
+
+
+
+
 
 
 clients = {}

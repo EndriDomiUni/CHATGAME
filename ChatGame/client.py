@@ -17,6 +17,10 @@ def send(event=None):
     msg = my_msg.get()
     my_msg.set("")
     client_socket.send(bytes(msg, "utf8"))
+    if msg == "{play}":
+        #master assegna ruolo
+        #master pone domanda
+        #controllo risposta
     if msg == "{quit}":
         client_socket.close()
         frame.quit()

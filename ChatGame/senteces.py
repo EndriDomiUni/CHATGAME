@@ -1,8 +1,7 @@
+#!/usr/bin/env python3
 
-choose_question = int(input("Choose the question number between 1 and 7"))
 
-
-sentence = {
+quest = {
     # uovo
     '1': 'Tutti sanno aprirlo, nessuno sa chiuderlo.',
     # nome
@@ -19,9 +18,27 @@ sentence = {
     '7': 'Mi trovi in un posto desolato, e se parli me ne sono già andato'
 }
 
+answer = {
+    '1': 'uovo',
+    '2': 'nome',
+    '3': 'freddo',
+    '4': 'vacanze',
+    '5': 'buchi',
+    '6': 'mano',
+    '7': 'silenzio'
+}
 
-def check_answer():
-    answer = str(input())
+list_quest = quest.keys()
+list_answer = answer.keys()
+
+associate_quest_answer = []
+
+for i in list_quest:
+    for j in list_answer:
+        
+
+
+
 
 
 
