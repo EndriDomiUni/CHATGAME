@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 from socket import AF_INET, socket, SOCK_STREAM
 from threading import Thread
 import tkinter as tk
+import senteces
 
 
 def receive():
@@ -18,9 +21,19 @@ def send(event=None):
     my_msg.set("")
     client_socket.send(bytes(msg, "utf8"))
     if msg == "{play}":
-        #master assegna ruolo
-        #master pone domanda
-        #controllo risposta
+        while True:
+            choise = input(int("Insert a number between 1-7"))
+            trap = senteces.trap
+
+            if choise == trap:
+                on_closing()
+            else:
+                quest = senteces.get_quest(choise)
+                my_msg.set(quest)
+
+                ask = input(str())
+                my_msg.set(ask)
+
     if msg == "{quit}":
         client_socket.close()
         frame.quit()
@@ -28,11 +41,6 @@ def send(event=None):
 
 def on_closing():
     my_msg.set("{quit}")
-    send()
-
-
-def play():
-    my_msg.set("{play}")
     send()
 
 

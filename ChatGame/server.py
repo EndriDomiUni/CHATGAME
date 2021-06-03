@@ -4,7 +4,8 @@
 
 from socket import AF_INET, socket, SOCK_STREAM
 from threading import Thread
-#import senteces
+import senteces
+import random
 
 
 def accepts_incoming_connections():
@@ -19,7 +20,7 @@ def accepts_incoming_connections():
 
 def manage_client(client):
     name = client.recv(BUFSIZ).decode("utf8")
-    welcome = 'Welcome %s! If you want leave chat, write {quit}.' % name
+    welcome = 'Welcome %s! If you want leave chat, write {quit} or if you want to play write: {play}.' % name
     client.send(bytes(welcome, "utf8"))
     msg = "%s joined us!" % name
     broadcast(bytes(msg, "utf8"))
@@ -29,6 +30,8 @@ def manage_client(client):
         msg = client.recv(BUFSIZ)
         if msg != bytes("{quit}", "utf8"):
             broadcast(msg, name + ": ")
+            if msg == bytes("{play}", "utf8"):
+                play()
         else:
             client.send(bytes("{quit}", "utf8"))
             client.close()
@@ -41,11 +44,30 @@ def broadcast(msg, prefix=""):
     for user in clients:
         user.send(bytes(prefix, "utf8") + msg)
 
-#def set_question(client):
-#    if client.send(bytes("{play}", "utf8")):
 
+def play():
+    actual_role = senteces.role[senteces.level]
+    welcome_game = 'Welcome to the game! Your actually role is %s, if you win: you rank up! ' \
+                   'I will propose you three questions, one will be a trick and you will lose the game immediately' \
+                   ', instead the other two contain a question' % actual_role
 
+    # mandare messaggio: welcome_home
 
+    # poni domande
+    quest1 = senteces.quest.get(random.randint(1, 8))
+    quest2 = senteces.quest.get(random.randint(1, 8))
+    trap = senteces.quest.get(random.randint(1, 8))
+
+    # stampa quesiti
+
+    # ottieni risposta
+
+    # se la risposta è uguale a trap -> quit
+    # se la risposta è giusta -> rank up
+
+    # se il lvl è al max -> win
+
+    # da capo
 
 
 
