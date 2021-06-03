@@ -67,8 +67,8 @@ def manage_client(client):
                     del clients[client]
                     broadcast(bytes("%s left the chat." % name, "utf8"))
                     break
-                # se la risposta è giusta -> rank up
                 else:
+                    # se la risposta è giusta -> rank up
                     senteces.rank_up(actual_role)
                     new_lever = "Your new role is %s" % actual_role
                     client.send(new_lever, "utf8")
