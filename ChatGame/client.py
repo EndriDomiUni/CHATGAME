@@ -4,7 +4,6 @@
 from socket import AF_INET, socket, SOCK_STREAM
 from threading import Thread
 import tkinter as tk
-import senteces
 
 
 def receive():
@@ -22,17 +21,7 @@ def send(event=None):
     client_socket.send(bytes(msg, "utf8"))
     if msg == "{play}":
         while True:
-            choise = input(int("Insert a number between 1-7"))
-            trap = senteces.trap
-
-            if choise == trap:
-                on_closing()
-            else:
-                quest = senteces.get_quest(choise)
-                my_msg.set(quest)
-
-                ask = input(str())
-                my_msg.set(ask)
+            start()
 
     if msg == "{quit}":
         client_socket.close()
@@ -44,6 +33,11 @@ def on_closing():
     send()
 
 
+def start():
+    my_msg.set("{play}")
+    send()
+
+
 frame = tk.Tk()
 frame.title("Chat-Game")
 
@@ -52,7 +46,7 @@ my_msg = tk.StringVar()
 my_msg.set("Insert here your message.")
 scrollbar = tk.Scrollbar(messages_frame)
 
-msg_list = tk.Listbox(messages_frame, height=15, width=50, yscrollcommand=scrollbar.set)
+msg_list = tk.Listbox(messages_frame, height=20, width=60, yscrollcommand=scrollbar.set)
 scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
 msg_list.pack(side=tk.LEFT, fill=tk.BOTH)
 msg_list.pack()
@@ -65,6 +59,7 @@ entry_field.pack()
 send_button = tk.Button(frame, text="Submit", command=send)
 send_button.pack()
 
+frame.protocol("PLAY", play())
 frame.protocol("WM_DELETE_WINDOW", on_closing)
 
 HOST = input('Insert server host: ')

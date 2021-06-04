@@ -32,6 +32,9 @@ answer = {
     '7': 'silenzio'
 }
 
+list_quest = quest.items()
+list_answer = answer.items()
+
 # Role- "Master give a role"
 level = 0
 people = 0
@@ -47,19 +50,21 @@ role = [people, army, minor_vassal, major_vassal, marquis, king]
 # like this: "[[('1', 'Tutti sanno aprirlo, nessuno sa chiuderlo.'), ('1', 'uovo')],...]"
 associate_quest_answer = []
 
-for i, j in zip(quest.items(), answer.items()):
+for i, j in zip(list_quest, list_answer):
     temp = [i, j]
     associate_quest_answer.append(temp)
 
-print(associate_quest_answer)
+# print(associate_quest_answer)
 
 # trap from master
-trap = -1
+trap = 0
+key_quest = 0
+value_quest = ""
 
 
-# return a quest from input
-def get_quest(choise):
-    return quest.get(quest, choise)
+# return a random quest
+def get_quest():
+    return quest.get(random.randint(1, 8))
 
 
 # return a new role if the player wins
@@ -69,3 +74,23 @@ def rank_up(level):
         if level == i:
             return i
     return level - 1
+
+
+# return a number between 1-3
+def get_trap():
+    trap = random.randint(1, 4)
+    return trap
+
+
+# check answer
+def check_answer(msg, key):
+    for q in list_answer:
+        if msg == q[key]:
+            return True
+    return False
+
+
+# set quest
+def assigns_quest():
+    k, v = random.choice(list_quest)
+    return k, v

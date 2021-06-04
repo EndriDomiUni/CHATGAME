@@ -5,7 +5,6 @@
 from socket import AF_INET, socket, SOCK_STREAM
 from threading import Thread
 import senteces
-import random
 
 
 def accepts_incoming_connections():
@@ -44,41 +43,72 @@ def manage_client(client):
                 client.send(bytes(welcome_game, "utf8"))
 
                 # poni domande
-                intro = "These are the three questions:"
+                intro = "Scegli un numero tra 1,2 o 3, ad esso sarà associata una domanda:"
+
+                # quella che devo prendere in input tipo msg
+                choise_quest = ""
                 client.send(bytes(intro, "utf8"))
 
-                quest1 = senteces.quest.get(random.randint(1, 8))
-                quest2 = senteces.quest.get(random.randint(1, 8))
-                trap = senteces.quest.get(random.randint(1, 8))
+                # prepara trappola
+                trap = senteces.get_trap()
+
+                if choise_quest != 1 and choise_quest != 2 and choise_quest != 3:
+                    error = "Numero diverso da 1, 2 o 3. Riprova!"
+                    client.send(bytes(error, "utf8"))
+                else:
+                    if choise_quest == trap:
+                        print("trappolaaaaa")
+                    else:
+                        quest_assigned = senteces.assigns_quest()
+                        client.send(bytes(quest_assigned.v, "utf8"))
+
+                        # assegna a 1,2,3 il valore di quest.values
+                        if choise_quest == 1 and choise_quest != trap:
+
+                            if quest_assigned == senteces.check_answer(msg, quest_assigned.k):
+                                senteces.rank_up(actual_role)
+                                client.send(bytes("You Win", "utf8"))
+                            else:
+                                client.send(bytes("{quit}", "utf8"))
+                                client.close()
+                                del clients[client]
+                                broadcast(bytes("%s left the chat." % name, "utf8"))
+                                break
+                        elif choise_quest == 2 and choise_quest != trap:
+                            if quest_assigned == senteces.check_answer(msg, quest_assigned.k):
+                                senteces.rank_up(actual_role)
+                                client.send(bytes("You Win", "utf8"))
+                            else:
+                                client.send(bytes("{quit}", "utf8"))
+                                client.close()
+                                del clients[client]
+                                broadcast(bytes("%s left the chat." % name, "utf8"))
+                                break
+                        elif choise_quest == 3 and choise_quest != trap:
+                            if quest_assigned == senteces.check_answer(msg, quest_assigned.k):
+                                senteces.rank_up(actual_role)
+                                client.send(bytes("You Win", "utf8"))
+                            else:
+                                client.send(bytes("{quit}", "utf8"))
+                                client.close()
+                                del clients[client]
+                                broadcast(bytes("%s left the chat." % name, "utf8"))
+                                break
+                        print(intro)
+
+                #   quest1 = senteces.quest.get(random.randint(1, 8))
+                #   quest2 = senteces.quest.get(random.randint(1, 8))
+                #   trap = senteces.quest.get(random.randint(1, 8))
 
                 # stampa quesiti
-                client.send(bytes(quest1), "utf8")
-                client.send(bytes(quest2), "utf8")
-                client.send(bytes(trap), "utf8")
+                # client.send(bytes(quest1), "utf8")
+                # client.send(bytes(quest2), "utf8")
+                # client.send(bytes(trap), "utf8")
 
                 # ottieni risposta
                 answer = ""
                 # se la risposta è uguale a trap -> quit
 
-                # trap.value
-                if answer == trap:
-                    client.send(bytes("{quit}", "utf8"))
-                    client.close()
-                    del clients[client]
-                    broadcast(bytes("%s left the chat." % name, "utf8"))
-                    break
-                else:
-                    # se la risposta è giusta -> rank up
-                    senteces.rank_up(actual_role)
-                    new_lever = "Your new role is %s" % actual_role
-                    client.send(new_lever, "utf8")
-
-                    # se il lvl è al max -> win
-                    if actual_role == senteces.role["king"]:
-                        win = "You have win %s" % name
-                        client.send(bytes(win, "utf8"))
-
-                # da capo
         else:
             client.send(bytes("{quit}", "utf8"))
             client.close()
