@@ -19,10 +19,6 @@ def send(event=None):
     msg = my_msg.get()
     my_msg.set("")
     client_socket.send(bytes(msg, "utf8"))
-    if msg == "{play}":
-        while True:
-            start()
-
     if msg == "{quit}":
         client_socket.close()
         frame.quit()
@@ -33,10 +29,6 @@ def on_closing():
     send()
 
 
-def start():
-    my_msg.set("{play}")
-    send()
-
 
 frame = tk.Tk()
 frame.title("Chat-Game")
@@ -46,7 +38,7 @@ my_msg = tk.StringVar()
 my_msg.set("Insert here your message.")
 scrollbar = tk.Scrollbar(messages_frame)
 
-msg_list = tk.Listbox(messages_frame, height=20, width=60, yscrollcommand=scrollbar.set)
+msg_list = tk.Listbox(messages_frame, height=40, width=100, yscrollcommand=scrollbar.set)
 scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
 msg_list.pack(side=tk.LEFT, fill=tk.BOTH)
 msg_list.pack()
@@ -59,11 +51,12 @@ entry_field.pack()
 send_button = tk.Button(frame, text="Submit", command=send)
 send_button.pack()
 
-frame.protocol("PLAY", play())
+
 frame.protocol("WM_DELETE_WINDOW", on_closing)
 
-HOST = input('Insert server host: ')
-PORT = input('Insert port: ')
+
+HOST = "127.0.0.1"
+PORT = 52001
 if not PORT:
     PORT = 52001
 else:
