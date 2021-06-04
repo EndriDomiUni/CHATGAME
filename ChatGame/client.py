@@ -5,6 +5,8 @@ from socket import AF_INET, socket, SOCK_STREAM
 from threading import Thread
 import tkinter as tk
 
+""" receive message in input """
+
 
 def receive():
     while True:
@@ -13,6 +15,9 @@ def receive():
             msg_list.insert(tk.END, msg)
         except OSError:
             break
+
+
+""" send message """
 
 
 def send(event=None):
@@ -24,10 +29,12 @@ def send(event=None):
         frame.quit()
 
 
+""" set message to 'quit' """
+
+
 def on_closing():
     my_msg.set("{quit}")
     send()
-
 
 
 frame = tk.Tk()
@@ -35,7 +42,7 @@ frame.title("Chat-Game")
 
 messages_frame = tk.Frame(frame)
 my_msg = tk.StringVar()
-my_msg.set("Insert here your message.")
+my_msg.set("")
 scrollbar = tk.Scrollbar(messages_frame)
 
 msg_list = tk.Listbox(messages_frame, height=40, width=100, yscrollcommand=scrollbar.set)
@@ -51,9 +58,7 @@ entry_field.pack()
 send_button = tk.Button(frame, text="Submit", command=send)
 send_button.pack()
 
-
 frame.protocol("WM_DELETE_WINDOW", on_closing)
-
 
 HOST = "127.0.0.1"
 PORT = 52001
