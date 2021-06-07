@@ -30,7 +30,6 @@ def manage_client(client):
     broadcast(bytes(msg, "utf8"))
     clients[client] = name
 
-    master = "master"
     # var to check a game phase
     phase = 0
 
@@ -47,14 +46,14 @@ def manage_client(client):
             if msg == bytes("{play}", "utf8"):
 
                 # Ho provato a passare più variabili, nella speranza di far uscire le frasi con una andata a capo
-                welcome_game = 'Benvenuto! Attualmento il ruolo è %s,' % roles
-                info1 = 'Se vinci, aumenti di grado \n'
-                info2 = 'altrimenti, lasci la stanza'
+                welcome_game = 'Benvenuto! Attualmento il ruolo è %s, \r\n' % roles
+                info1 = 'Se vinci, aumenti di grado \r\n'
+                info2 = 'altrimenti, lasci la stanza\r\n'
                 client.send(bytes(welcome_game, "utf8"))
                 client.send(bytes(info1, "utf8"))
                 client.send(bytes(info2, "utf8"))
 
-                intro = "Scegli un numero tra 1,2 o 3, ad esso sarà associata una domanda:"
+                intro = "Scegli un numero tra 1,2 o 3, ad esso sarà associata una domanda: \r\n"
                 client.send(bytes(intro, "utf8"))
 
                 phase = 1
@@ -66,11 +65,11 @@ def manage_client(client):
                 trap = game.get_trap()
                 if choice_quest != bytes('1', "utf8") and choice_quest != bytes('2', "utf8") and choice_quest \
                         != bytes('3', "utf8"):
-                    error = "Numero diverso da 1, 2 o 3. Riprova!"
+                    error = "Numero diverso da 1, 2 o 3. Riprova!\r\n"
                     client.send(bytes(error, "utf8"))
                 else:
                     if choice_quest == bytes(str(trap), "utf8"):
-                        client.send(bytes("Ops hai beccato la trappola", "utf8"))
+                        client.send(bytes("Ops hai beccato la trappola \r\n", "utf8"))
                         broadcast(bytes("%s left the chat." % name, "utf8"))
                         client.send(bytes("{quit}", "utf8"))
                         client.close()
@@ -89,10 +88,20 @@ def manage_client(client):
                     win = "Hai vinto"
                     client.send(bytes(win, "utf8"))
 
-                    new_grade = "Il tuo nuovo grado è: %s" % actual_role
+                    new_grade = "Il tuo nuovo grado è: %s \r\n" % actual_role
                     client.send(bytes(new_grade, "utf8"))
 
-                    intro = "Scegli un numero tra 1,2 o 3, ad esso sarà associata una domanda:"
+                    if win(actual_role):
+                        say_goodbye = "HAI VINTO. FINE \r\n"
+                        client.send(say_goodbye, "utf8")
+                        client.send(bytes("{quit}", "utf8"))
+                        client.close()
+                        print("%s left the room", client)
+                        del clients[client]
+                        broadcast(bytes("%s left the chat." % name, "utf8"))
+                        break
+
+                    intro = "Scegli un numero tra 1,2 o 3, ad esso sarà associata una domanda: \r\n"
                     client.send(bytes(intro, "utf8"))
 
                     phase = 1
@@ -100,7 +109,7 @@ def manage_client(client):
                     broadcast(bytes("%s wrong, Try Again!." % name, "utf8"))
 
         else:
-            client.send(bytes("Ops hai beccato la trappola", "utf8"))
+            client.send(bytes("Ops hai beccato la trappola \r\n", "utf8"))
             client.send(bytes("{quit}", "utf8"))
             client.close()
             print("%s left the room", client)

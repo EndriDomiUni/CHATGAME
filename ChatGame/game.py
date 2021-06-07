@@ -61,3 +61,10 @@ def assigns_quest():
 
 def rank_role(increase):
     return role[increase]
+
+
+""" check win"""
+
+
+def win(actual_role):
+    return actual_role == role[5]
